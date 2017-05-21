@@ -1,16 +1,23 @@
+sudo: required
 language: 
   - java
+  - python
+
+python:
+  - "2.7"
+  - "3.6"
+  - "3.7-dev" # 3.7 development branch
 
 jdk:
   - oraclejdk8
 
 install:
-  - sudo pip install pytest
-  - sudo pip install -r etc/python-pip-requirements.txt
+  - "pip install pytest"
+  - "pip install -r etc/python-pip-requirements.txt'
 
 script: 
   - cd tools/developer_tools/code_testing/CdbWebPortalTest
   - mvn -q test
   - cd ../../../..
   - cd src/python
-  - py.test
+  - python py.test
