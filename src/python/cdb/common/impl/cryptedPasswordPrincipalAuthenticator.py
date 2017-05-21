@@ -7,7 +7,7 @@ See LICENSE file.
 
 
 from cdb.common.utility.cryptUtility import CryptUtility
-from authorizationPrincipalAuthenticator import AuthorizationPrincipalAuthenticator 
+from .authorizationPrincipalAuthenticator import AuthorizationPrincipalAuthenticator 
 
 class CryptedPasswordPrincipalAuthenticator(AuthorizationPrincipalAuthenticator):
 

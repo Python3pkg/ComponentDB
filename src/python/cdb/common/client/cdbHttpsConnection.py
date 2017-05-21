@@ -7,12 +7,12 @@ See LICENSE file.
 
 
 import socket
-import httplib
+import http.client
 import ssl
 
 from cdb.common.utility.configurationManager import ConfigurationManager
 
-class CdbHttpsConnection(httplib.HTTPSConnection):
+class CdbHttpsConnection(http.client.HTTPSConnection):
 
     def __init__(self, hostPort, timeout):
         cm = ConfigurationManager.getInstance()
@@ -27,7 +27,7 @@ class CdbHttpsConnection(httplib.HTTPSConnection):
         caCertFile = cm.getSslCaCertFile()
         certChain = None
         strict = True
-        httplib.HTTPSConnection.__init__(self, host, port, keyFile, certFile, strict, timeout)
+        http.client.HTTPSConnection.__init__(self, host, port, keyFile, certFile, strict, timeout)
         context = self.getContext(keyFile, certFile, caCertFile, certChain)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

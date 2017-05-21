@@ -9,8 +9,8 @@ See LICENSE file.
 import datetime
 from cdb.common.db.entities.entityInfo import EntityInfo
 from cdb.common.db.impl.cdbDbEntityHandler import CdbDbEntityHandler
-from userInfoHandler import UserInfoHandler
-from userGroupHandler import UserGroupHandler
+from .userInfoHandler import UserInfoHandler
+from .userGroupHandler import UserGroupHandler
 from cdb.common.exceptions.authorizationError import AuthorizationError
 
 

@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 
-from cdbObject import CdbObject
+from .cdbObject import CdbObject
 
 class ItemElementLog(CdbObject):
 

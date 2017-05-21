@@ -28,7 +28,7 @@ class FileSystemController(CdbController):
     def getDirectoryList(self, directoryName, **kwargs):
         if not len(directoryName):
             raise InvalidRequest('Invalid directory name.')
-        if not kwargs.has_key('parentDirectory'):
+        if 'parentDirectory' not in kwargs:
             raise InvalidRequest('Missing parent directory.')
         parentDirectory = kwargs.get('parentDirectory')
         path = '%s/%s' % (parentDirectory, directoryName)

@@ -37,7 +37,7 @@ class OsUtility:
         """ Remove file on a given path and ignore any errors. """
         try:
             os.remove(path)
-        except Exception, ex:
+        except Exception as ex:
             pass
 
     @classmethod
@@ -104,7 +104,7 @@ class OsUtility:
         moduleName = os.path.basename(filePath).replace('.py', '')
         sys.path = [dirName] + sys.path
         cmd = 'from %s import %s as tmpObject' % (moduleName, name)
-        exec cmd
+        exec(cmd)
         del sys.path[0]
         return tmpObject
 

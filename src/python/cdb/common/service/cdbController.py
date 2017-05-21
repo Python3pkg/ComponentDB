@@ -13,7 +13,7 @@ See LICENSE file.
 #######################################################################
 
 import cherrypy
-import httplib
+import http.client
 import json
 
 from sys import exc_info
@@ -53,7 +53,7 @@ class CdbController(object):
 
     @classmethod
     def handleCpException(cls):
-        cherrypy.response.status = httplib.OK
+        cherrypy.response.status = http.client.OK
         ex = exc_info()[1]
         if ex == None:
             ex = InternalError('Internal Webservice Error')
@@ -65,7 +65,7 @@ class CdbController(object):
         status = None
         msg = '%s' % ex
         msg = msg.split('\n')[0]
-        for code in cdbExceptionMap.CDB_EXCEPTION_MAP.keys():
+        for code in list(cdbExceptionMap.CDB_EXCEPTION_MAP.keys()):
             exStr = cdbExceptionMap.CDB_EXCEPTION_MAP.get(code).split('.')[-1]
             if exStr == exClass:
                 status = code
@@ -108,11 +108,11 @@ class CdbController(object):
             try:
                 response = func(*args, **kwargs)
                 cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
-            except CdbException, ex:
+            except CdbException as ex:
                 cls.getLogger().error('%s' % ex)
                 cls.handleException(ex)
                 response = ex.getFullJsonRep()
-            except Exception, ex:
+            except Exception as ex:
                 cls.getLogger().error('%s' % ex)
                 cls.handleException(ex)
                 response = InternalError(ex).getFullJsonRep()

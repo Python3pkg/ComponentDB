@@ -7,7 +7,7 @@ See LICENSE file.
 
 
 import os
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.cdb_web_service.api.designRestApi import DesignRestApi
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 from cdb.common.exceptions.invalidArgument import InvalidArgument
@@ -61,7 +61,7 @@ Description:
         api = DesignRestApi(self.getUsername(), self.getPassword(), self.getServiceHost(), self.getServicePort(), self.getServiceProtocol())
         designElementList = self.loadLatticeCsvFile(self.getCsvFile())
         design = api.loadDesign(self.getName(), self.getOwnerUserId(), self.getOwnerGroupId(), self.getIsGroupWriteable(), self.getDescription(), designElementList)
-        print design.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(design.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
     # Utility methojd to load csv file and prepare list of design
     # element dictionaries.
@@ -104,10 +104,10 @@ Description:
                 break
 
             designElementDict = { 'sortOrder' : sortOrder }
-            for (key, index) in headerMap.items():
+            for (key, index) in list(headerMap.items()):
                 if valueList[index] is None:
                     continue
-                if replacementKeyMap.has_key(key):
+                if key in replacementKeyMap:
                     # Design element attribute
                     designElementDict[replacementKeyMap.get(key)] = valueList[index]
                 else:

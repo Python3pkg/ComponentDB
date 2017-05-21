@@ -77,14 +77,14 @@ if __name__ == '__main__':
     import sys
     #password = "cdb"
     password = sys.argv[1]
-    print 'Clear text: ', password
+    print('Clear text: ', password)
     #cryptedPassword = CryptUtility.cryptPassword(password)
     #print 'Crypted: ', cryptedPassword
     #isVerified = CryptUtility.verifyPassword(password, cryptedPassword)
     #print 'Verify: ', isVerified
 
     cryptedPassword = CryptUtility.cryptPasswordWithPbkdf2(password)
-    print 'Crypted: ', cryptedPassword
+    print('Crypted: ', cryptedPassword)
     isVerified = CryptUtility.verifyPasswordWithPbkdf2(password, cryptedPassword)
-    print 'Verify: ', isVerified
+    print('Verify: ', isVerified)
 

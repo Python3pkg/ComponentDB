@@ -13,8 +13,8 @@ See LICENSE file.
 #######################################################################
 
 from cdb.common.objects.cdbObjectManager import CdbObjectManager
-from pdmLink import PdmLink
-import ConfigParser
+from .pdmLink import PdmLink
+import configparser
 import os
 
 class PdmLinkControllerImpl(CdbObjectManager):
@@ -31,7 +31,7 @@ class PdmLinkControllerImpl(CdbObjectManager):
 
     def __init__(self):
         CdbObjectManager.__init__(self)
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.readfp(open(self.CONFIG_FILE_PATH))
 
         pdmlinkUser = config.get(self.CONFIG_SECTION_NAME, self.CONFIG_PDMLINK_USER_KEY)

@@ -1,4 +1,4 @@
-import ConfigParser, os
+import configparser, os
 
 class test():
     CONFIG_PATH = '../pdmLink.cfg'
@@ -12,7 +12,7 @@ class test():
 
     def __init__(self):
 
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.readfp(open(self.CONFIG_PATH))
 
         pdmlinkUser = config.get(self.CONFIG_SECTION_NAME, self.CONFIG_PDMLINK_USER_KEY)
@@ -22,7 +22,7 @@ class test():
         icmsUser = config.get(self.CONFIG_SECTION_NAME, self.CONFIG_ICMS_USER_KEY)
         icmsPass = config.get(self.CONFIG_SECTION_NAME, self.CONFIG_ICMS_PASS_KEY)
 
-        print (pdmlinkUser, pdmlinkPass, pdmLinkUrl, icmsUrl, icmsUser, icmsPass)
+        print((pdmlinkUser, pdmlinkPass, pdmLinkUrl, icmsUrl, icmsUser, icmsPass))
 
 
 test()

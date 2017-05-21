@@ -59,7 +59,7 @@ class Icms:
         docSearch = self.icmsInfoClass.service.DocInfoByName(keyword)
         result = []
         if(docSearch['StatusInfo']['statusCode'] != 0):
-            print docSearch['StatusInfo']['statusMessage']
+            print(docSearch['StatusInfo']['statusMessage'])
         else:
             for revision in docSearch['Revisions']:
                 pdmLinkStyleRevs = self.convertRevLabel(revision['dRevLabel'])
@@ -80,7 +80,7 @@ class Icms:
 
     def __convertSudsToDict(self, sudsResponse):
         out = {}
-        for k, v in asdict(sudsResponse).iteritems():
+        for k, v in asdict(sudsResponse).items():
             if hasattr(v, '__keylist__'):
                 out[k] = self.__convertSudsToDict(v)
             elif isinstance(v, list):
@@ -96,9 +96,9 @@ class Icms:
     
 if __name__ == '__main__':
     icmsConnection = Icms()
-    print icmsConnection.performIcmsQuickSearch('quadrupole')
-    print icmsConnection.getDocInfo('D14100201-113160.ASM')
-    print icmsConnection.getIcmsRevisions('D14100201-113160.ASM') 
-    print icmsConnection.getIcmsRevisions('u2210203-101600.drw')
-    print icmsConnection.getIcmsRevisions('U1340201-102000.DRW')
-    print icmsConnection.getIcmsRevisions('U221020202-104210.DRW') 
+    print(icmsConnection.performIcmsQuickSearch('quadrupole'))
+    print(icmsConnection.getDocInfo('D14100201-113160.ASM'))
+    print(icmsConnection.getIcmsRevisions('D14100201-113160.ASM')) 
+    print(icmsConnection.getIcmsRevisions('u2210203-101600.drw'))
+    print(icmsConnection.getIcmsRevisions('U1340201-102000.DRW'))
+    print(icmsConnection.getIcmsRevisions('U221020202-104210.DRW')) 

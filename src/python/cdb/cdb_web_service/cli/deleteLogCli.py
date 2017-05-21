@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 from cdb.cdb_web_service.api.logRestApi import LogRestApi
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
 class DeleteLogCli(CdbWebServiceCli):
@@ -33,7 +33,7 @@ Description:
 
         cdbObject = api.deleteLogEntry(self.getLogId())
 
-        print cdbObject.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(cdbObject.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

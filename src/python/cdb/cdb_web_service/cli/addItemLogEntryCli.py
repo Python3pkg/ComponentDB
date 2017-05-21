@@ -5,7 +5,7 @@ Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 """
 from cdb.cdb_web_service.api.itemRestApi import ItemRestApi
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
 class addItemLogEntry(CdbWebServiceCli):
@@ -43,7 +43,7 @@ Description:
         api = ItemRestApi(self.getUsername(), self.getPassword(), self.getServiceHost(), self.getServicePort(), self.getServiceProtocol())
 
         log = api.addLogEntryToItemWithQrId(self.getQrId(), self.getLogEntry(), self.getAttachment())
-        print log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

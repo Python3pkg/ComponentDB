@@ -7,7 +7,7 @@ See LICENSE file.
 
 
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from cdb.common.utility.encoder import Encoder
 from cdb.common.exceptions.cdbException import CdbException
@@ -25,9 +25,9 @@ class FileSystemRestApi(CdbRestApi):
             url = '%s/directories/%s?parentDirectory=%s' % (self.getContextRoot(), directoryName, parentDirectory)
             responseDict = self.sendRequest(url=url, method='GET')
             return responseDict
-        except CdbException, ex:
+        except CdbException as ex:
             raise
-        except Exception, ex:
+        except Exception as ex:
             self.getLogger().exception('%s' % ex)
             raise CdbException(exception=ex)
 
@@ -39,9 +39,9 @@ class FileSystemRestApi(CdbRestApi):
             url = '%s/files/%s?parentDirectory=%s&encodedFileContent=%s' % (self.getContextRoot(), fileName, parentDirectory, encodedFileContent)
             responseDict = self.sendSessionRequest(url=url, method='POST')
             return responseDict
-        except CdbException, ex:
+        except CdbException as ex:
             raise
-        except Exception, ex:
+        except Exception as ex:
             self.getLogger().exception('%s' % ex)
             raise CdbException(exception=ex)
 
@@ -51,8 +51,8 @@ class FileSystemRestApi(CdbRestApi):
 if __name__ == '__main__':
     #api = FileSystemRestApi('sveseli', 'sveseli', 'zagreb.svdev.net', 10232, 'https')
     api = FileSystemRestApi('sveseli', 'sveseli', 'zagreb.svdev.net', 10232, 'http')
-    print api.getDirectoryList('/home/sveseli')
-    print api.writeFile('/tmp/xyz', 'Hi there, qweqweqsad \dsdd')
+    print(api.getDirectoryList('/home/sveseli'))
+    print(api.writeFile('/tmp/xyz', 'Hi there, qweqweqsad \dsdd'))
 
 
 

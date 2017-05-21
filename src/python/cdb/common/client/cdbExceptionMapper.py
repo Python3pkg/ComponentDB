@@ -19,14 +19,14 @@ class CdbExceptionMapper:
         msg = httpHeaders.get('Cdb-Status-Message', 'Internal Error')
         if code is None or code == str(cdbStatus.CDB_OK):
             return
-        elif cdbExceptionMap.CDB_EXCEPTION_MAP.has_key(int(code)):
+        elif int(code) in cdbExceptionMap.CDB_EXCEPTION_MAP:
             # Exception string is value of the form 'x.y.z'
             # where 'x.y' is cdb module, and 'z' class in that module
             exStr = cdbExceptionMap.CDB_EXCEPTION_MAP.get(int(code))
             exClass = exStr.split('.')[-1] # 'z' in 'x.y.z'
             exModule = '.'.join(exStr.split('.')[:-1]) # 'x.y' in 'x.y.z'
-            exec 'from cdb.common.exceptions.%s import %s' % (exModule, exClass)
-            exec 'ex = %s(msg)' % (exClass)
+            exec('from cdb.common.exceptions.%s import %s' % (exModule, exClass))
+            exec('ex = %s(msg)' % (exClass))
             raise ex
         else:
             raise CdbException(msg)

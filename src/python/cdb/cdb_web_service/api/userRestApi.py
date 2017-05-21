@@ -7,7 +7,7 @@ See LICENSE file.
 
 
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from cdb.common.utility.encoder import Encoder
 from cdb.common.exceptions.cdbException import CdbException
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     api = UserRestApi('sveseli', 'sveseli', 'zagreb.svdev.net', 10232, 'http')
     userGroups = api.getUserGroups()
     for userGroup in userGroups:
-        print userGroup.getDisplayString()
+        print(userGroup.getDisplayString())
 
 
 

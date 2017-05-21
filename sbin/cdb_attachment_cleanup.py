@@ -15,22 +15,22 @@ See LICENSE file.
 
 import os
 import sys
-from __builtin__ import set
+from builtins import set
 
 cdbRootDir = os.environ.get('CDB_ROOT_DIR')
 
 if (cdbRootDir is None):
     directory = os.path.dirname(__file__)
     fullPath = os.path.abspath(directory + "/..")
-    print >> sys.stderr, "Environment not loaded. Please run `source %s/setup.sh` before running this script." %(fullPath)
+    print("Environment not loaded. Please run `source %s/setup.sh` before running this script." %(fullPath), file=sys.stderr)
     exit(1)
 
 if len(sys.argv) < 2:
-    print 'This script has not been provided a deployment name. It will run with no configuration (env based developer defaults)'
-    print 'please rerun script with the deployment name (CDB_DB_NAME)'
-    print 'Usage:'
-    print  "$0 [CDB_DB_NAME]"
-    response = raw_input("Would you like to continue with developer defaults? [y/N]: ")
+    print('This script has not been provided a deployment name. It will run with no configuration (env based developer defaults)')
+    print('please rerun script with the deployment name (CDB_DB_NAME)')
+    print('Usage:')
+    print("$0 [CDB_DB_NAME]")
+    response = input("Would you like to continue with developer defaults? [y/N]: ")
     if response.lower() != 'y':
         exit(0)
     else:
@@ -42,7 +42,7 @@ else:
     if os.path.isfile(cdbWebServiceConfigFile):
         os.environ['CDB_CONFIG_FILE'] = cdbWebServiceConfigFile
     else:
-        print >> sys.stderr, "Configuration file does not exist: %s." %(cdbWebServiceConfigFile)
+        print("Configuration file does not exist: %s." %(cdbWebServiceConfigFile), file=sys.stderr)
         exit(1)
 
     deploymentConfiguration = open("%s/etc/%s.deploy.conf" % (cdbInstallDir, databaseName)).read().split('\n')
@@ -54,7 +54,7 @@ else:
     dataDirectory = deploymentConfigurationDictionary['CDB_DATA_DIR']
 
 if os.path.exists(dataDirectory) == False:
-    print >> sys.stderr, "Data directory '%s' does not exist." %(dataDirectory)
+    print("Data directory '%s' does not exist." %(dataDirectory), file=sys.stderr)
     exit(1)
 
 from cdb.common.db.api.propertyDbApi import PropertyDbApi
@@ -68,10 +68,10 @@ propertyApi = PropertyDbApi()
 logApi = LogDbApi()
 
 cm = ConfigurationManager.getInstance()
-print "DB Name: " + cm.getDbSchema()
-print "DB User: " + cm.getDbUser()
-print "Data Directory: " + dataDirectory
-print ''
+print("DB Name: " + cm.getDbSchema())
+print("DB User: " + cm.getDbUser())
+print("Data Directory: " + dataDirectory)
+print('')
 
 def appendNonEmptyValue(array, value):
     if value is None or value == "":
@@ -125,7 +125,7 @@ def listDirectory(directory):
     if os.path.exists(directory):
         return os.listdir(directory)
     else:
-        print "Directory '%s' could not be found. " % directory
+        print("Directory '%s' could not be found. " % directory)
         return []
 
 def cleanAdditionalFileVersions(directoryListing):
@@ -160,24 +160,24 @@ def printHeader(header):
     secondHeaderFiller = firstHeaderFiller
     if (header.__len__() % 2) != 0:
         secondHeaderFiller = secondHeaderFiller + '*'
-    print '*' * TOTAL_HEADER_SIZE
-    print "%s %s %s" % (firstHeaderFiller, header, secondHeaderFiller)
-    print '*' * TOTAL_HEADER_SIZE
+    print('*' * TOTAL_HEADER_SIZE)
+    print("%s %s %s" % (firstHeaderFiller, header, secondHeaderFiller))
+    print('*' * TOTAL_HEADER_SIZE)
 
 def resultPrint(header, dataList, printList):
-    print ''
+    print('')
     printHeader(header)
-    print "* Total: " + str(dataList.__len__())
+    print("* Total: " + str(dataList.__len__()))
     if printList:
         for item in dataList:
-            print '*** ' + item
-    print '*' * TOTAL_HEADER_SIZE
+            print('*** ' + item)
+    print('*' * TOTAL_HEADER_SIZE)
 
 
 def promptRemovalOfDirectoryFilesIfAny(attachmentList, dataDirectory, listDescription, matchSearch = False):
     filesRemoved = 0
     if attachmentList.__len__() > 0:
-        userResponse = raw_input("Would You like to remove %s? [y/N]: " % listDescription)
+        userResponse = input("Would You like to remove %s? [y/N]: " % listDescription)
         if userResponse.lower() == 'y':
             removedBytes = 0
             if matchSearch:
@@ -187,7 +187,7 @@ def promptRemovalOfDirectoryFilesIfAny(attachmentList, dataDirectory, listDescri
                             filePath = dataDirectory + "/" + directoryFile
                             fileSize = os.path.getsize(filePath)
                             removedBytes += fileSize
-                            print " Removing: %s (size: %s bytes) " % (filePath, fileSize)
+                            print(" Removing: %s (size: %s bytes) " % (filePath, fileSize))
                             os.remove(filePath)
                             filesRemoved += 1
             else:
@@ -195,10 +195,10 @@ def promptRemovalOfDirectoryFilesIfAny(attachmentList, dataDirectory, listDescri
                     filePath = dataDirectory + "/" + attachmentListFile
                     fileSize = os.path.getsize(filePath)
                     removedBytes +=  fileSize
-                    print " Removing: %s (size: %s bytes) " % (filePath, fileSize)
+                    print(" Removing: %s (size: %s bytes) " % (filePath, fileSize))
                     os.remove(filePath)
                     filesRemoved += 1
-            print " -- Total Bytes Removed: %s bytes" % removedBytes
+            print(" -- Total Bytes Removed: %s bytes" % removedBytes)
     return filesRemoved
 
 unusedDirectoryImageAttachments = findAttachmentsOnlyPresentInFirstList(imageDirectoryAttachments, imageDBAttachments)
@@ -219,27 +219,27 @@ logAttachmentsRemoved = promptRemovalOfDirectoryFilesIfAny(unusedDirectoryLogAtt
 resultPrint("Missing Log Attachments (Not present in the directory)", missingDirectoryLogAttachments, True)
 
 
-print ''
+print('')
 
 printHeader('Summary Information')
 summaryPrintItem = '********** %-50s %-7s **********'
-print summaryPrintItem % ('Total DB Image Property Attachments: ', str(imageDBAttachments.__len__()))
-print summaryPrintItem % ('Total DB Document Property Attachments: ', str(documentDBAttachments.__len__()))
-print summaryPrintItem % ('Total DB Property Attachments: ', str(imageDBAttachments.__len__() + documentDBAttachments.__len__()))
-print summaryPrintItem % ('Total DB Log Attachments: ', str(allDBLogAttachments.__len__()))
-print summaryPrintItem % ('Total DB Linked Log Attachments: ', str(usedDBLogAttachments.__len__()))
-print summaryPrintItem % ('Total DB unused Log Attachments: ', str(unusedDBLogAttachments.__len__()))
-print summaryPrintItem % ('Total DB Attachments: ', str(allDBLogAttachments.__len__() + imageDBAttachments.__len__() + documentDBAttachments.__len__()))
-print summaryPrintItem % ('Total Missing Image Files: ', str(missingDirectoryImageAttachments.__len__()))
-print summaryPrintItem % ('Total Missing Document Files: ', str(missingDirectoryDocumentAttachments.__len__()))
-print summaryPrintItem % ('Total Missing Log Files: ', str(missingDirectoryLogAttachments.__len__()))
-print summaryPrintItem % ('Total Unused Image Files: ', str(unusedDirectoryImageAttachments.__len__()))
-print summaryPrintItem % ('Total Unused Document Files: ', str(unusedDirectoryDocumentAttachments.__len__()))
-print summaryPrintItem % ('Total Unused Log Files: ', str(unusedDirectoryLogAttachments.__len__()))
-print summaryPrintItem % ('Total Image Files Removed: ', str(imageFilesRemoved))
-print summaryPrintItem % ('Total Document Files Removed: ', str(documentFilesRemoved))
-print summaryPrintItem % ('Total Log Files Removed: ', str(logAttachmentsRemoved))
-print summaryPrintItem % ('Total Files Removed: ', str(logAttachmentsRemoved + documentFilesRemoved + imageFilesRemoved))
-print '*' * TOTAL_HEADER_SIZE
-print '*' * TOTAL_HEADER_SIZE
-print '*' * TOTAL_HEADER_SIZE
+print(summaryPrintItem % ('Total DB Image Property Attachments: ', str(imageDBAttachments.__len__())))
+print(summaryPrintItem % ('Total DB Document Property Attachments: ', str(documentDBAttachments.__len__())))
+print(summaryPrintItem % ('Total DB Property Attachments: ', str(imageDBAttachments.__len__() + documentDBAttachments.__len__())))
+print(summaryPrintItem % ('Total DB Log Attachments: ', str(allDBLogAttachments.__len__())))
+print(summaryPrintItem % ('Total DB Linked Log Attachments: ', str(usedDBLogAttachments.__len__())))
+print(summaryPrintItem % ('Total DB unused Log Attachments: ', str(unusedDBLogAttachments.__len__())))
+print(summaryPrintItem % ('Total DB Attachments: ', str(allDBLogAttachments.__len__() + imageDBAttachments.__len__() + documentDBAttachments.__len__())))
+print(summaryPrintItem % ('Total Missing Image Files: ', str(missingDirectoryImageAttachments.__len__())))
+print(summaryPrintItem % ('Total Missing Document Files: ', str(missingDirectoryDocumentAttachments.__len__())))
+print(summaryPrintItem % ('Total Missing Log Files: ', str(missingDirectoryLogAttachments.__len__())))
+print(summaryPrintItem % ('Total Unused Image Files: ', str(unusedDirectoryImageAttachments.__len__())))
+print(summaryPrintItem % ('Total Unused Document Files: ', str(unusedDirectoryDocumentAttachments.__len__())))
+print(summaryPrintItem % ('Total Unused Log Files: ', str(unusedDirectoryLogAttachments.__len__())))
+print(summaryPrintItem % ('Total Image Files Removed: ', str(imageFilesRemoved)))
+print(summaryPrintItem % ('Total Document Files Removed: ', str(documentFilesRemoved)))
+print(summaryPrintItem % ('Total Log Files Removed: ', str(logAttachmentsRemoved)))
+print(summaryPrintItem % ('Total Files Removed: ', str(logAttachmentsRemoved + documentFilesRemoved + imageFilesRemoved)))
+print('*' * TOTAL_HEADER_SIZE)
+print('*' * TOTAL_HEADER_SIZE)
+print('*' * TOTAL_HEADER_SIZE)

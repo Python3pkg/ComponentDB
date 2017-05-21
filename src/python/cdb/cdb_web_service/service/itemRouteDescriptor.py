@@ -11,8 +11,8 @@ See LICENSE file.
 #
 from cdb.cdb_web_service.service.itemSessionController import ItemSessionController
 from cdb.common.utility.configurationManager import ConfigurationManager
-from itemController import ItemController
-from itemElementController import ItemElementController
+from .itemController import ItemController
+from .itemElementController import ItemElementController
 
 
 class ItemRouteDescriptor:

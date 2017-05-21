@@ -731,40 +731,40 @@ if __name__ == '__main__':
     pdmLink = PdmLink()
 
     def getDrawingFromPDMLink(drawingNumber):
-        print 'Get Drawing: ', drawingNumber
+        print('Get Drawing: ', drawingNumber)
         drawing = pdmLink.getDrawing(drawingNumber)
-        print drawing.getDisplayString(PdmLinkDrawing.DEFAULT_KEY_LIST)
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+        print(drawing.getDisplayString(PdmLinkDrawing.DEFAULT_KEY_LIST))
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
     def getDrawingsFromPDMLink(searchPattern):
-        print 'Get Drawings: ', searchPattern
+        print('Get Drawings: ', searchPattern)
         drawings = pdmLink.getDrawings(searchPattern)
         for drawing in drawings:
-            print drawing.getDisplayString(PdmLinkDrawing.DEFAULT_KEY_LIST)
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+            print(drawing.getDisplayString(PdmLinkDrawing.DEFAULT_KEY_LIST))
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
     def searchDrawingFromPDMLink(searchPattern):
-        print 'Search Drawing: ', searchPattern
+        print('Search Drawing: ', searchPattern)
         results = pdmLink.getDrawingSearchResults(searchPattern)
         for result in results:
-            print result.getDisplayString(PdmLinkSearchResult.DEFAULT_KEY_LIST)
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+            print(result.getDisplayString(PdmLinkSearchResult.DEFAULT_KEY_LIST))
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         return results
 
     def getThumbnailImage(drawingNumber):
-        print 'Get Thumbnail and Image for: ', drawingNumber
+        print('Get Thumbnail and Image for: ', drawingNumber)
         drawing = pdmLink.getDrawing(drawingNumber)
-        print pdmLink.getDrawingImage(drawing['revisionList'][1]['ufid']).getDisplayString(Image.DEFAULT_KEY_LIST)
-        print pdmLink.getDrawingThumbnail(drawing['revisionList'][1]['ufid']).getDisplayString(Image.DEFAULT_KEY_LIST)
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+        print(pdmLink.getDrawingImage(drawing['revisionList'][1]['ufid']).getDisplayString(Image.DEFAULT_KEY_LIST))
+        print(pdmLink.getDrawingThumbnail(drawing['revisionList'][1]['ufid']).getDisplayString(Image.DEFAULT_KEY_LIST))
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
     # Complete results of a search result
     results = searchDrawingFromPDMLink('pole Top')
     oid = results[0]['oid']
     ufid = results[0]['ufid']
-    print pdmLink.completeDrawingInformation(ufid, oid)
+    print(pdmLink.completeDrawingInformation(ufid, oid))
 
-    print pdmLink.generateComponentInfo('D14100201-113160.asm')
+    print(pdmLink.generateComponentInfo('D14100201-113160.asm'))
 
     # Getting a drawing from PDMLink
     getDrawingFromPDMLink('D14100201-113160.asm')

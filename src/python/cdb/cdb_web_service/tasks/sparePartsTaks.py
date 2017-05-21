@@ -100,7 +100,7 @@ class SparePartsTask:
                                    % self.SPARE_PARTS_CONFIGURATION_MIN_KEY)
 
             email = ''
-            if metadataDict.has_key(self.SPARE_PARTS_CONFIGURATION_EMAIL_KEY):
+            if self.SPARE_PARTS_CONFIGURATION_EMAIL_KEY in metadataDict:
                 emailValue = metadataDict[self.SPARE_PARTS_CONFIGURATION_EMAIL_KEY]
                 if emailValue == self.SPARE_PARTS_CONFIGURATION_NOEMAIL_VALUE:
                     email = None

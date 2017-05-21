@@ -12,9 +12,9 @@ See LICENSE file.
 
 #######################################################################
 
-from icms import Icms
+from .icms import Icms
 from cdb.common.objects.cdbObjectManager import CdbObjectManager
-import ConfigParser
+import configparser
 import os
 
 class IcmsControllerImpl(CdbObjectManager):
@@ -28,7 +28,7 @@ class IcmsControllerImpl(CdbObjectManager):
 
     def __init__(self):
         CdbObjectManager.__init__(self)
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.readfp(open(self.CONFIG_FILE_PATH))
 
         icmsUrl = config.get(self.CONFIG_SECTION_NAME, self.CONFIG_ICMS_URL_KEY)

@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 from cdb.cdb_web_service.api.logRestApi import LogRestApi
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
 class UpdateLogCli(CdbWebServiceCli):
@@ -53,7 +53,7 @@ Description:
 
         log = api.updateLogEntry(self.getLogId(), self.getLogText(), self.getEffectiveFromDate(), self.getEffectiveToDate(), self.getLogTopicName())
 
-        print log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

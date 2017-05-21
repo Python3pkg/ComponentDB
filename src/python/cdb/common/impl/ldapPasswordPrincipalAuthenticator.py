@@ -7,7 +7,7 @@ See LICENSE file.
 
 
 from cdb.common.utility.ldapUtility import LdapUtility
-from authorizationPrincipalAuthenticator import AuthorizationPrincipalAuthenticator 
+from .authorizationPrincipalAuthenticator import AuthorizationPrincipalAuthenticator 
 
 class LdapPasswordPrincipalAuthenticator(AuthorizationPrincipalAuthenticator):
 
@@ -21,7 +21,7 @@ class LdapPasswordPrincipalAuthenticator(AuthorizationPrincipalAuthenticator):
                 self.logger.debug('Checking credentials for %s' % principal.getName())
                 self.ldapUtility.checkCredentials(principal.getName(), password)
                 return principal
-            except Exception, ex:
+            except Exception as ex:
                 self.logger.debug(ex)
         return None
 

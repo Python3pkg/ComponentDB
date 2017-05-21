@@ -20,7 +20,7 @@ class CdbDbEntity(object):
 
     def __init__(self, **kwargs):
         self.logger = LoggingManager.getInstance().getLogger(self.__class__.__name__)
-        for col, value in kwargs.items():
+        for col, value in list(kwargs.items()):
             if col not in self.columns:
                 raise DbError('Column %s not found in table %s' % (col, self.__class__.__name__))
             else:
@@ -30,26 +30,26 @@ class CdbDbEntity(object):
         return self.logger
 
     def mapColumn(self, dbName, objectName):
-        if self.__dict__.has_key(dbName):
+        if dbName in self.__dict__:
             self.__dict__[objectName] = self.__dict__.get(dbName)
 
     def mapColumns(self):
-        for (dbName, objectName) in self.mappedColumnDict.items():
+        for (dbName, objectName) in list(self.mappedColumnDict.items()):
             self.mapColumn(dbName, objectName)
     
     def toCdbObject(self):
         scrubbedDict = copy.copy(self.__dict__)
-        for (dbName, objectName) in self.mappedColumnDict.items():
-            if scrubbedDict.has_key(dbName):
+        for (dbName, objectName) in list(self.mappedColumnDict.items()):
+            if dbName in scrubbedDict:
                 scrubbedDict[objectName] = scrubbedDict.get(dbName)
                 del scrubbedDict[dbName]
         for key in self.removeKeyList:
-            if scrubbedDict.has_key(key):
+            if key in scrubbedDict:
                 del scrubbedDict[key]
-        for (key,value) in scrubbedDict.items():
+        for (key,value) in list(scrubbedDict.items()):
             if isinstance(value, CdbDbEntity):
                 scrubbedDict[key] = value.toCdbObject()
-            elif type(value) == types.ListType:
+            elif type(value) == list:
                 scrubbedList = []
                 for item in value:
                     if isinstance(item, CdbDbEntity):
@@ -72,7 +72,7 @@ class CdbDbEntity(object):
                 addComma = True
             else:
                 s += ','
-            exec 'value = self.%s' % colName
+            exec('value = self.%s' % colName)
             if value is not None:
                 s += '%s=%s' % (colName, value)
             s += ')'

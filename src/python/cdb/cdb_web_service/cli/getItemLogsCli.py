@@ -5,7 +5,7 @@ Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 """
 from cdb.cdb_web_service.api.itemRestApi import ItemRestApi
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
 class getItemLogs(CdbWebServiceCli):
@@ -32,7 +32,7 @@ Description:
 
         logs = api.getLogEntriesForItemWithQrId(self.getQrId())
         for log in logs:
-            print log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+            print(log.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

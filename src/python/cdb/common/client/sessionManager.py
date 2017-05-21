@@ -6,9 +6,9 @@ See LICENSE file.
 """
 
 
-import urllib
-import urllib2
-import urlparse
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import urllib.parse
 import time
 import getpass
 import os
@@ -65,8 +65,8 @@ class SessionManager:
             # provided.
             data = { 'username' : self.getUsername(username), 'password' : self.getPassword(password) }
             self.logger.debug('Establishing session for user %s @ %s)' % (username, url))
-            (response,responseData) = self.sendRequest(url='%s%s' % (url, selector), method='POST', contentType='application/x-www-form-urlencoded', data=urllib.urlencode(data))
-        except urllib2.URLError, ex:
+            (response,responseData) = self.sendRequest(url='%s%s' % (url, selector), method='POST', contentType='application/x-www-form-urlencoded', data=urllib.parse.urlencode(data))
+        except urllib.error.URLError as ex:
             self.logger.exception('%s' % ex)
             raise UrlError(exception=ex)
 
@@ -82,7 +82,7 @@ class SessionManager:
 
     def askForUsername(self):
         defaultUsername = getpass.getuser()
-        username = raw_input('Username [%s]: ' % defaultUsername)
+        username = input('Username [%s]: ' % defaultUsername)
         username = username.strip()
         if not len(username):
             username = defaultUsername
@@ -106,7 +106,7 @@ class SessionManager:
         try:
             self.logger.debug('Clearing session cache: %s' % (self.sessionCacheFile))
             OsUtility.removeFile(self.sessionCacheFile)
-        except Exception, ex:
+        except Exception as ex:
             # ignore errors.
             self.logger.warn('Could not clear session cache: %s' % (ex))
             pass
@@ -121,7 +121,7 @@ class SessionManager:
             f.write('%s' % sessionCookie)
             f.close()
             os.chmod(self.sessionCacheFile, stat.S_IRUSR|stat.S_IWUSR|stat.S_IXUSR)
-        except Exception, ex:
+        except Exception as ex:
             self.logger.warn('Could not save session: %s' % (ex))
 
     def loadSession(self):
@@ -138,7 +138,7 @@ class SessionManager:
             else:
                 self.logger.debug('Loaded session from %s: %s' % (self.sessionCacheFile, session))
                 return session
-        except Exception, ex:
+        except Exception as ex:
             self.logger.warn('Could not load session: %s' % (ex))
         return None
 
@@ -150,29 +150,29 @@ class SessionManager:
                 cm = ConfigurationManager.getInstance()
                 keyFile = cm.getSslKeyFile()
                 certFile = cm.getSslCertFile()
-                self.urlOpener = urllib2.build_opener(CdbHttpsHandler)
+                self.urlOpener = urllib.request.build_opener(CdbHttpsHandler)
                 #self.logger.debug('Using Cdb HTTPS Handler')
             else:
                 # HTTP, use standard http handler
-                self.urlOpener = urllib2.build_opener(urllib2.HTTPHandler)
+                self.urlOpener = urllib.request.build_opener(urllib.request.HTTPHandler)
         # Install opener before returning it.
-        urllib2.install_opener(self.urlOpener)
+        urllib.request.install_opener(self.urlOpener)
         return self.urlOpener
 
     def sendRequest(self, url, method, contentType='html', data={}):
         """ Send http request without cookies. """
         if url.find('://') < 0:
             url = '%s%s' % (self.host, url)
-        parsedUrl = urlparse.urlparse(url)
+        parsedUrl = urllib.parse.urlparse(url)
         protocol = parsedUrl[0]
         path = parsedUrl[2]
         self.logger.debug('Sending request: %s' % url)
         encodedData = ''
         if data is not None:
-            if type(data) == types.DictType and len(data):
-                encodedData=urllib.urlencode(data)
+            if type(data) == dict and len(data):
+                encodedData=urllib.parse.urlencode(data)
                 contentType='application/x-www-form-urlencoded'
-            elif type(data) == types.StringType:
+            elif type(data) == bytes:
                 encodedData = data
             elif UrlLibFileStreamUtility.isStreamDataObject(data):
                 encodedData = data
@@ -180,7 +180,7 @@ class SessionManager:
                 # In case data was used on invalid session
                 encodedData.seek(0)
 
-        request = urllib2.Request(url, data=encodedData)
+        request = urllib.request.Request(url, data=encodedData)
         request.get_method = lambda: method
         request.add_header('Content-Type', contentType)
         request.add_header('Content-Length', str(len(data)))
@@ -189,13 +189,13 @@ class SessionManager:
         try:
             opener = self.getUrlOpener(protocol)
             response = opener.open(request)
-        except urllib2.HTTPError, ex:
+        except urllib.error.HTTPError as ex:
             # If we see cdb headers, cdb exception will be thrown,
             # otherwise we'll throw UrlError
             self.checkResponseHeadersForErrors(ex.hdrs)
             self.logger.exception('%s' % ex)
             raise UrlError(exception=ex)
-        except urllib2.URLError, ex:
+        except urllib.error.URLError as ex:
             self.logger.exception('%s' % ex)
             raise UrlError(exception=ex)
 
@@ -212,7 +212,7 @@ class SessionManager:
             self.establishSession(self.host, self.username, self.password)
         try:
             return self.sendRequest(url, method, contentType, data)
-        except InvalidSession, ex:
+        except InvalidSession as ex:
             self.clearSessionFile()
             self.establishSession(self.host, self.username, self.password)
             return self.sendRequest(url, method, contentType, data)
@@ -223,14 +223,14 @@ class SessionManager:
             sessionCookie = responseHeaders.get('Set-Cookie')
             self.saveSession(sessionCookie)
             return sessionCookie
-        except (AuthorizationError, InvalidSession), ex:
+        except (AuthorizationError, InvalidSession) as ex:
             self.clearSessionFile()
             raise
 
     def checkResponseHeadersForErrors(self, responseHeaders):
         try:
             CdbExceptionMapper.checkStatus(responseHeaders)
-        except AuthorizationError, ex:
+        except AuthorizationError as ex:
             self.clearSessionFile()
             raise
 

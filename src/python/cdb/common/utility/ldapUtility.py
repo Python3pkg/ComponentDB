@@ -35,10 +35,10 @@ class LdapUtility:
             # perform a synchronous bind
             ldapClient.simple_bind_s(ldapUsername, password)
             #ldapClient.whoami_s()
-        except ldap.INVALID_CREDENTIALS, ex:
+        except ldap.INVALID_CREDENTIALS as ex:
             ldapClient.unbind()
             raise AuthenticationError('Invalid LDAP credentials for user %s' % username)
-        except ldap.SERVER_DOWN, ex:
+        except ldap.SERVER_DOWN as ex:
             raise CommunicationError('Cannot reach LDAP server %s' % self.serverUrl)
 
 #######################################################################

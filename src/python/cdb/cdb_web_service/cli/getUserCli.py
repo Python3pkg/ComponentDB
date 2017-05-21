@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.cdb_web_service.api.userRestApi import UserRestApi
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
@@ -39,7 +39,7 @@ Description:
             userInfo = api.getUserById(self.getId())
         else:
             userInfo = api.getUserByUsername(self.getUsername())
-        print userInfo.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(userInfo.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

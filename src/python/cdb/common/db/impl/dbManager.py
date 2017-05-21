@@ -41,7 +41,7 @@ class DbManager:
         from cdb.common.db.impl.dbManager import DbManager
         try:
             mgr = DbManager()
-        except DbManager, ex:
+        except DbManager as ex:
             mgr = ex
         return mgr 
 
@@ -78,7 +78,7 @@ class DbManager:
             self.metadata = sqlalchemy.MetaData(engineUrl)
 
             self.logger.debug('Mapping DB tables')
-            for (dbTableName, (dbEntityClass, dbRelationDict)) in cdbDbEntityMap.CDB_DB_ENTITY_MAP.items():
+            for (dbTableName, (dbEntityClass, dbRelationDict)) in list(cdbDbEntityMap.CDB_DB_ENTITY_MAP.items()):
                 self.mapTable(dbEntityClass, dbTableName, dbRelationDict)
             self.logger.debug('Initialized SQLalchemy engines')
 
@@ -107,7 +107,7 @@ class DbManager:
 
             # Build relations from specified foreign key columns and other properties.
             tableRelations = {}
-            for (name, propertyDict) in relationDict.items():
+            for (name, propertyDict) in list(relationDict.items()):
                 lazy = propertyDict.get('lazy')
                 parentEntity = propertyDict.get('parentEntity')
                 foreignKeyColumns = propertyDict.get('foreignKeyColumns', [])
@@ -167,6 +167,6 @@ if __name__ == '__main__':
     ConfigurationManager.getInstance().setConsoleLogLevel('debug')
     mgr = DbManager.getInstance()
     mgr.acquireConnection()
-    print 'Got connection'
+    print('Got connection')
 
 

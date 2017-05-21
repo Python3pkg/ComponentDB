@@ -229,7 +229,7 @@ if __name__ == '__main__':
     imageAttachments = getPropertyValueListByPropertyTypeHandler('Image')
     documentAttachments = getPropertyValueListByPropertyTypeHandler('Document')
 
-    print imageAttachments
-    print documentAttachments
+    print(imageAttachments)
+    print(documentAttachments)
 
 

@@ -16,7 +16,7 @@ import os
 import socket
 import pwd
 import UserDict
-import ConfigParser
+import configparser
 
 from cdb.common.constants import cdbServiceConstants
 from cdb.common.exceptions.configurationError import ConfigurationError
@@ -101,7 +101,7 @@ class ConfigurationManager(UserDict.UserDict):
         from cdb.common.utility.configurationManager import ConfigurationManager
         try:
             cm = ConfigurationManager()
-        except ConfigurationManager, ex:
+        except ConfigurationManager as ex:
             cm = ex
         return cm
 
@@ -219,7 +219,7 @@ class ConfigurationManager(UserDict.UserDict):
         try:
             v = open(varFile, 'r').readline()
             self[key] = v.lstrip().rstrip()
-        except Exception, ex:
+        except Exception as ex:
             pass
 
     def __getKeyValue(self, key, default='__cdb_default__'):
@@ -240,7 +240,7 @@ class ConfigurationManager(UserDict.UserDict):
            _configFile = self.getConfigFile()
             
         if _configFile is not None and os.path.exists(_configFile):
-            configParser = ConfigParser.RawConfigParser()
+            configParser = configparser.RawConfigParser()
             configParser.read(_configFile)
             if not configParser.has_section(configSection):
                 return
@@ -255,7 +255,7 @@ class ConfigurationManager(UserDict.UserDict):
         if self.configParser is None:
             configFile = self.getConfigFile()
             if os.path.exists(configFile):
-                self.configParser = ConfigParser.ConfigParser(defaults)
+                self.configParser = configparser.ConfigParser(defaults)
                 self.configParser.read(configFile)
                 self.configParser.defaults = defaults
         return self.configParser
@@ -270,7 +270,7 @@ class ConfigurationManager(UserDict.UserDict):
         if self.hasConfigSection(configSection):
             try:
                 return configParser.get(configSection, key)
-            except ConfigParser.NoOptionError, ex:
+            except configparser.NoOptionError as ex:
                 # ok, return default value
                 pass
         return defaultValue
@@ -297,7 +297,7 @@ class ConfigurationManager(UserDict.UserDict):
     def getConfigParserFromConfigFile(cls, configFile):
         if not os.path.exists(configFile):
             return None
-        configParser = ConfigParser.RawConfigParser()
+        configParser = configparser.RawConfigParser()
         configParser.read(configFile)
         return configParser
 
@@ -363,7 +363,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('logFile', default)
 
     def hasLogFile(self):
-        return self.has_key('logFile')
+        return 'logFile' in self
 
     def getDefaultConsoleLogLevel(self):
         return self['defaultConsoleLogLevel']
@@ -378,7 +378,7 @@ class ConfigurationManager(UserDict.UserDict):
         return os.environ.get('CDB_CONSOLE_LOG_LEVEL')
 
     def hasConsoleLogLevel(self):
-        return self.has_key('consoleLogLevel')
+        return 'consoleLogLevel' in self
 
     def getDefaultFileLogLevel(self):
         return self['defaultFileLogLevel']
@@ -390,7 +390,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('fileLogLevel', default)
 
     def hasFileLogLevel(self):
-        return self.has_key('fileLogLevel')
+        return 'fileLogLevel' in self
 
     def getDefaultLogRecordFormat(self):
         return self['defaultLogRecordFormat']
@@ -402,7 +402,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('logRecordFormat', default)
 
     def hasLogRecordFormat(self):
-        return self.has_key('logRecordFormat')
+        return 'logRecordFormat' in self
 
     def getDefaultLogDateFormat(self):
         return self['defaultLogDateFormat']
@@ -414,7 +414,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('logDateFormat', default)
 
     def hasLogDateFormat(self):
-        return self.has_key('logDateFormat')
+        return 'logDateFormat' in self
 
     def getDefaultCherrypyLogLevel(self):
         return self['defaultCherrypyLogLevel']
@@ -426,7 +426,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('cherrypyLogLevel', default)
 
     def hasCherrypyLogLevel(self):
-        return self.has_key('cherrypyLogLevel')
+        return 'cherrypyLogLevel' in self
 
     def getDefaultCherrypyLogCherrypy(self):
         return self['defaultCherrypyLogFile']
@@ -438,7 +438,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('cherrypyLogFile', default)
 
     def hasCherrypyLogFile(self):
-        return self.has_key('cherrypyLogFile')
+        return 'cherrypyLogFile' in self
 
     def getDefaultCherrypyAccessFile(self):
         return self['defaultCherrypyAccessFile']
@@ -450,7 +450,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('cherrypyAccessFile', default)
 
     def hasCherrypyAccessFile(self):
-        return self.has_key('cherrypyAccessFile')
+        return 'cherrypyAccessFile' in self
 
     def getDefaultEmailMode(self):
         return self['defaultEmailMode']
@@ -462,7 +462,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('emailMode', default)
 
     def hasEmailMode(self):
-        return self.has_key('emailMode')
+        return 'emailMode' in self
 
     def getDefaultEmailSmtpServer(self):
         return self['defaultEmailSmtpServer']
@@ -474,7 +474,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('emailSmtpServer', default)
 
     def hasEmailSmtpServer(self):
-        return self.has_key('emailSmtpServer')
+        return 'emailSmtpServer' in self
 
     def getDefaultEmailSenderEmail(self):
         return self['defaultEmailSenderEmail']
@@ -486,7 +486,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('emailSenderEmail', default)
 
     def hasEmailSenderEmail(self):
-        return self.has_key('emailSenderEmail')
+        return 'emailSenderEmail' in self
     
     def getDefaultEmailAdminNotificationEmail(self):
         return self['defaultEmailAdminNotificationEmail']
@@ -498,7 +498,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('emailAdminNotificationEmail', default)
 
     def hasEmailAdminNotificationEmail(self):
-        return self.has_key('emailAdminNotificationEmail')
+        return 'emailAdminNotificationEmail' in self
 
     def getDefaultEmailSubject(self):
         return self['defaultEmailSubjectStart']
@@ -510,7 +510,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('emailSubjectStart', default)
 
     def hasEmailSubject(self):
-        return self.has_key('emailSubjectStart')
+        return 'emailSubjectStart' in self
 
     def getDefaultPortalWebAddress(self):
         return self['defaultPortalWebAddress']
@@ -522,7 +522,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('portalWebAddress', default)
 
     def hasPortalWebAddress(self):
-        return self.has_key('portalWebAddress')
+        return 'portalWebAddress' in self
 
     def getDefaultLogAttachmentPath(self):
         return self['defaultLogAttachmentPath']
@@ -534,7 +534,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('logAttachmentPath', default)
 
     def hasLogAttachmentPath(self):
-        return self.has_key('logAttachmentPath')
+        return 'logAttachmentPath' in self
 
     def setStorageDirectory(self, emailSubject):
         self['storageDirectory'] = emailSubject
@@ -543,7 +543,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('storageDirectory', default)
 
     def hasStorageDirectory(self):
-        return self.has_key('storageDirectory')
+        return 'storageDirectory' in self
 
     def isDbAvailable(self):
         if os.access(self.getDbPasswordFile(), os.R_OK):
@@ -560,7 +560,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('serviceProtocol', default)
 
     def hasServiceProtocol(self):
-        return self.has_key('serviceProtocol')
+        return 'serviceProtocol' in self
 
     def getDefaultServicePort(self):
         return self['defaultServicePort']
@@ -572,7 +572,7 @@ class ConfigurationManager(UserDict.UserDict):
         return int(self.__getKeyValue('servicePort', default))
 
     def hasServicePort(self):
-        return self.has_key('servicePort')
+        return 'servicePort' in self
 
     def getDefaultServiceHost(self):
         return self['defaultServiceHost']
@@ -584,7 +584,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('serviceHost', default)
 
     def hasServiceHost(self):
-        return self.has_key('serviceHost')
+        return 'serviceHost' in self
 
     def getDefaultServiceUsername(self):
         return self['defaultServiceUsername']
@@ -596,7 +596,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('serviceUsername', default)
 
     def hasServiceUsername(self):
-        return self.has_key('serviceUsername')
+        return 'serviceUsername' in self
 
     def getDefaultServicePassword(self):
         return self['defaultServicePassword']
@@ -608,7 +608,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('servicePassword', default)
 
     def hasServicePassword(self):
-        return self.has_key('servicePassword')
+        return 'servicePassword' in self
 
     def getDefaultDb(self):
         return self['defaultDb']
@@ -620,7 +620,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('db', default) 
 
     def hasDb(self):
-        return self.has_key('db')
+        return 'db' in self
 
     def getDefaultDbHost(self):
         return self['defaultDbHost']
@@ -632,7 +632,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('dbHost', default) 
 
     def hasDbHost(self):
-        return self.has_key('dbHost')
+        return 'dbHost' in self
 
     def getDefaultDbPort(self):
         return self['defaultDbPort']
@@ -644,7 +644,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('dbPort', default) 
 
     def hasDbPort(self):
-        return self.has_key('dbPort')
+        return 'dbPort' in self
 
     def getDefaultDbPassword(self):
         return self['defaultDbPassword']
@@ -656,7 +656,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('dbPassword', default) 
 
     def hasDbPassword(self):
-        return self.has_key('dbPassword')
+        return 'dbPassword' in self
 
     def getDefaultDbPasswordFile(self):
         return self['defaultDbPasswordFile']
@@ -668,7 +668,7 @@ class ConfigurationManager(UserDict.UserDict):
         self['dbPasswordFile'] = f
 
     def hasDbPasswordFile(self):
-        return self.has_key('dbPasswordFile')
+        return 'dbPasswordFile' in self
 
     def getDefaultDbUser(self):
         return self['defaultDbUser']
@@ -680,7 +680,7 @@ class ConfigurationManager(UserDict.UserDict):
         self['dbUser'] = dbUser
 
     def hasDbUser(self):
-        return self.has_key('dbUser')
+        return 'dbUser' in self
 
     def getDbSchema(self, default='__cdb_default__'):
         return self.__getKeyValue('dbSchema', default)
@@ -697,7 +697,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('configFile', default)
 
     def hasConfigFile(self):
-        return self.has_key('configFile')
+        return 'configFile' in self
 
     def getDefaultContextRoot(self):
         return self['defaultContextRoot']
@@ -709,7 +709,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('contextRoot', default)
 
     def hasContextRoot(self):
-        return self.has_key('contextRoot')
+        return 'contextRoot' in self
 
     def getDefaultSessionCacheFile(self):
         return self['defaultSessionCacheFile']
@@ -721,7 +721,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('sessionCacheFile', default)
 
     def hasSessionCacheFile(self):
-        return self.has_key('sessionCacheFile')
+        return 'sessionCacheFile' in self
 
     def getDefaultRequireSessionCredentials(self):
         return self['defaultRequireSessionCredentials']
@@ -733,7 +733,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('requireSessionCredentials', default)
 
     def hasRequireSessionCredentials(self):
-        return self.has_key('requireSessionCredentials')
+        return 'requireSessionCredentials' in self
 
     def getDefaultSslCaCertFile(self):
         return self['defaultSslCaCertFile']
@@ -745,7 +745,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('sslCaCertFile', default)
 
     def hasSslCaCertFile(self):
-        return self.has_key('sslCaCertFile')
+        return 'sslCaCertFile' in self
 
     def getDefaultSslCertFile(self):
         return self['defaultSslCertFile']
@@ -757,7 +757,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('sslCertFile', default)
 
     def hasSslCertFile(self):
-        return self.has_key('sslCertFile')
+        return 'sslCertFile' in self
 
     def getDefaultSslKeyFile(self):
         return self['defaultSslKeyFile']
@@ -769,7 +769,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('sslKeyFile', default)
 
     def hasSslKeyFile(self):
-        return self.has_key('sslKeyFile')
+        return 'sslKeyFile' in self
 
     def getDefaultUsername(self):
         return self['defaultUsername']
@@ -781,7 +781,7 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('username', default)
 
     def hasUsername(self):
-        return self.has_key('username')
+        return 'username' in self
 
     def getDefaultPassword(self):
         return self['defaultPassword']
@@ -793,11 +793,11 @@ class ConfigurationManager(UserDict.UserDict):
         return self.__getKeyValue('password', default)
 
     def hasPassword(self):
-        return self.has_key('password')
+        return 'password' in self
 
 #######################################################################
 # Testing.
 
 if __name__ == '__main__':
     cm = ConfigurationManager.getInstance()
-    print cm
+    print(cm)

@@ -14,10 +14,10 @@ import cherrypy
 from cdb.common.utility.configurationManager import ConfigurationManager
 from cdb.common.utility.loggingManager import LoggingManager
 from cdb.cdb_web_service.service.cdbPluginRouteMapper import CdbPluginRouteMapper
-from itemRouteDescriptor import ItemRouteDescriptor
-from loginRouteDescriptor import LoginRouteDescriptor
-from userRouteDescriptor import UserRouteDescriptor
-from logRouteDescriptor import LogRouteDescriptor
+from .itemRouteDescriptor import ItemRouteDescriptor
+from .loginRouteDescriptor import LoginRouteDescriptor
+from .userRouteDescriptor import UserRouteDescriptor
+from .logRouteDescriptor import LogRouteDescriptor
 
 
 class CdbWebServiceRouteMapper:

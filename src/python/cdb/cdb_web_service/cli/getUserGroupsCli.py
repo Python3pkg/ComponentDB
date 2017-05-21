@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.cdb_web_service.api.userRestApi import UserRestApi
 
 class GetUserGroupsCli(CdbWebServiceCli):
@@ -23,7 +23,7 @@ Description:
         api = UserRestApi(self.getUsername(), self.getPassword(), self.getServiceHost(), self.getServicePort(), self.getServiceProtocol())
         userGroups = api.getUserGroups()
         for userGroup in userGroups:
-            print userGroup.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+            print(userGroup.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 
 #######################################################################

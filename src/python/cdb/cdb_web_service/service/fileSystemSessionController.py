@@ -29,7 +29,7 @@ class FileSystemSessionController(CdbSessionController):
     @CdbSessionController.require(CdbSessionController.isLoggedIn())
     @CdbSessionController.execute
     def writeFile(self, fileName, **kwargs):
-        if not kwargs.has_key('parentDirectory'):
+        if 'parentDirectory' not in kwargs:
             raise InvalidRequest('Missing parent directory.')
         parentDirectory = kwargs.get('parentDirectory')
         encodedFileContent = kwargs.get('encodedFileContent', '')

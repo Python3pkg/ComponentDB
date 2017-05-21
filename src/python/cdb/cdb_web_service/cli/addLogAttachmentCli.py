@@ -6,7 +6,7 @@ See LICENSE file.
 """
 from cdb.cdb_web_service.api.itemRestApi import ItemRestApi
 from cdb.cdb_web_service.api.logRestApi import LogRestApi
-from cdbWebServiceCli import CdbWebServiceCli
+from .cdbWebServiceCli import CdbWebServiceCli
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
 class addItemLogEntry(CdbWebServiceCli):
@@ -45,7 +45,7 @@ Description:
 
         logAttachment = api.addLogAttachment(self.getLogId(), self.getAttachment(), self.getAttachmentDescription())
 
-        print logAttachment.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat())
+        print(logAttachment.getDisplayString(self.getDisplayKeys(), self.getDisplayFormat()))
 
 #######################################################################
 # Run command.

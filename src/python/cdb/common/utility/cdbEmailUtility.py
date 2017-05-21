@@ -182,7 +182,7 @@ class CdbEmailUtility:
         """
         result = "<table>"
 
-        for infoItemKey, infoItemValue in informationOrderedDictionary.items():
+        for infoItemKey, infoItemValue in list(informationOrderedDictionary.items()):
             if infoItemValue is not None and infoItemValue != '':
                 infoItemValueTdAttributes = ''
                 if str(infoItemValue).isdigit():

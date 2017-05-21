@@ -11,8 +11,8 @@ See LICENSE file.
 #
 
 from cdb.common.utility.configurationManager import ConfigurationManager
-from userInfoController import UserInfoController
-from userGroupController import UserGroupController
+from .userInfoController import UserInfoController
+from .userGroupController import UserGroupController
 
 class UserRouteDescriptor:
 

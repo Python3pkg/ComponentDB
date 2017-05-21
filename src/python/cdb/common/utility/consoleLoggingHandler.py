@@ -37,7 +37,7 @@ class ConsoleLoggingHandler(StreamHandler):
 if __name__ == '__main__':
     import sys
     import logging
-    exec 'sh = ConsoleLoggingHandler(sys.stdout,)'
+    exec('sh = ConsoleLoggingHandler(sys.stdout,)')
     sh.setLevel(logging.INFO)
     rootLogger = logging.getLogger('')
     logging.basicConfig(level=logging.DEBUG)

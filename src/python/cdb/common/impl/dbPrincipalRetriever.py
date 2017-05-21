@@ -9,7 +9,7 @@ See LICENSE file.
 from cdb.common.constants import cdbRole
 from cdb.common.objects.authorizationPrincipal import AuthorizationPrincipal
 from cdb.common.db.api.userDbApi import UserDbApi
-from authorizationPrincipalRetriever import AuthorizationPrincipalRetriever 
+from .authorizationPrincipalRetriever import AuthorizationPrincipalRetriever 
 
 class DbPrincipalRetriever(AuthorizationPrincipalRetriever):
 
@@ -28,7 +28,7 @@ class DbPrincipalRetriever(AuthorizationPrincipalRetriever):
                 for userGroup in user.get('userGroupList', []):
                     if userGroup.get('name') == self.adminGroupName:
                         principal.setRole(cdbRole.CDB_ADMIN_ROLE)
-        except Exception, ex:
+        except Exception as ex:
             self.logger.debug(ex)
         return principal
 

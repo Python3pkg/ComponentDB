@@ -9,7 +9,7 @@ See LICENSE file.
 from cdb.common.constants import cdbRole
 from cdb.common.objects.authorizationPrincipal import AuthorizationPrincipal
 from cdb.common.utility.cryptUtility import CryptUtility
-from authorizationPrincipalRetriever import AuthorizationPrincipalRetriever 
+from .authorizationPrincipalRetriever import AuthorizationPrincipalRetriever 
 
 class NoOpPrincipalRetriever(AuthorizationPrincipalRetriever):
 

@@ -50,7 +50,7 @@ class CdbRestApi(CdbApi):
             return '%s://%s:%s' % (self.protocol, socket.gethostbyname(self.host), self.port)
 
         # Break the URL down into component pieces
-        from urlparse import urlparse
+        from urllib.parse import urlparse
         o = urlparse(url)
         wsUrl = '%s://%s' % (o[0], o[1])
         return wsUrl
@@ -174,19 +174,19 @@ class CdbRestApi(CdbApi):
 if __name__ == '__main__':
     api = CdbRestApi('sveseli', 'sveseli')
     #api.sendRequest('https://zagreb.svdev.net:10232/cdb/directory/list', 'GET', data='')
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
     from cdb.common.utility.configurationManager import ConfigurationManager
     cm = ConfigurationManager.getInstance()
     cm.setSessionCacheFile('/tmp/session')
     #print 'Non-session request'
     #print api.sendRequest('https://zagreb.svdev.net:10232/cdb/directory/list?path=/tmp', 'GET')
-    print 'Session request'
+    print('Session request')
     data = { 'path' : '/tmp/xyz' }
     #print api.sendSessionRequest('https://zagreb.svdev.net:10232/cdb/file/write?path=/tmp/xyz&content=xyz', 'POST', contentType='application/x-www-form-urlencoded', data=urllib.urlencode(data))
     #print api.sendSessionRequest('https://zagreb.svdev.net:10232/cdb/file/write', 'POST', data=data)
     postdata='path=/tmp/xyz'
-    postdata+='&content=%s' % urllib.quote_plus('Hey there')
-    print api.sendSessionRequest('https://zagreb.svdev.net:10232/cdb/file/write', 'POST', contentType='application/x-www-form-urlencoded', data=postdata)
+    postdata+='&content=%s' % urllib.parse.quote_plus('Hey there')
+    print(api.sendSessionRequest('https://zagreb.svdev.net:10232/cdb/file/write', 'POST', contentType='application/x-www-form-urlencoded', data=postdata))
 
 
 

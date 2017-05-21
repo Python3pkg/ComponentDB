@@ -6,7 +6,7 @@ See LICENSE file.
 """
 
 
-from cdbWebServiceSessionCli import CdbWebServiceSessionCli
+from .cdbWebServiceSessionCli import CdbWebServiceSessionCli
 from cdb.cdb_web_service.api.fileSystemRestApi import FileSystemRestApi
 from cdb.common.exceptions.invalidRequest import InvalidRequest
 
@@ -37,7 +37,7 @@ Description:
         """)
         self.checkPath()
         api = FileSystemRestApi(self.getUsername(), self.getPassword(), self.getServiceHost(), self.getServicePort(), self.getServiceProtocol())
-        print api.writeFile(self.getPath(), self.getContent())
+        print(api.writeFile(self.getPath(), self.getContent()))
 
 #######################################################################
 # Run command.

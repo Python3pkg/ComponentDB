@@ -30,7 +30,7 @@ class AuthorizationManager(CdbObjectManager):
         from cdb.common.impl.authorizationManager import AuthorizationManager
         try:
             am = AuthorizationManager()
-        except AuthorizationManager, ex:
+        except AuthorizationManager as ex:
             am = ex
         return am
 
@@ -52,9 +52,9 @@ class AuthorizationManager(CdbObjectManager):
     def createObjectInstance(self, moduleName, className, constructor):
         self.logger.debug('Creating object: %s, %s, %s' % (moduleName, className, constructor))
         cmd = 'from %s import %s' % (moduleName, className)
-        exec cmd
+        exec(cmd)
         cmd = 'objectInstance = %s' % (constructor)
-        exec cmd
+        exec(cmd)
         return objectInstance
 
     @classmethod
@@ -129,6 +129,6 @@ class AuthorizationManager(CdbObjectManager):
 if __name__ == '__main__':
     am = AuthorizationManager.getInstance()
     authPrincipal = am.getAuthorizationPrincipal('sveseli', 'sv')
-    print 'Auth principal: ', authPrincipal
+    print('Auth principal: ', authPrincipal)
 
 

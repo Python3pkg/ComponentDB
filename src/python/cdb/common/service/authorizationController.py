@@ -13,7 +13,7 @@ See LICENSE file.
 #######################################################################
 
 import cherrypy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from cherrypy.lib import httpauth
 
 from cdb.common.constants import cdbStatus
@@ -71,7 +71,7 @@ def parseBasicAuthorizationHeaders():
             return (username, password)
         else:
             raise AuthorizationError('Username and/or password not supplied.')
-    except Exception, ex:
+    except Exception as ex:
         errorMsg = 'Could not extract username/password from authorization header: %s' % ex
         raise AuthorizationError(errorMsg)
 
@@ -87,8 +87,8 @@ def checkAuth(*args, **kwargs):
     logger.debug('Request params: %s' % (cherrypy.request.params))
     logger.debug('Request query string: %s' % (cherrypy.request.query_string))
 
-    method = urllib.quote(cherrypy.request.request_line.split()[0])
-    params = urllib.quote(cherrypy.request.request_line.split()[1])
+    method = urllib.parse.quote(cherrypy.request.request_line.split()[0])
+    params = urllib.parse.quote(cherrypy.request.request_line.split()[1])
     logger.debug('Session: %s' % ((cherrypy.session.__dict__)))
     if conditions is not None:
         sessionId = cherrypy.serving.session.id
@@ -97,7 +97,7 @@ def checkAuth(*args, **kwargs):
         logger.debug('Session cache length: %s' % (len(sessionCache)))
         logger.debug('Session cache: %s' % (sessionCache))
         # Check session.
-        if not sessionCache.has_key(sessionId):
+        if sessionId not in sessionCache:
             errorMsg = 'Invalid or expired session id: %s.' % sessionId
             logger.debug(errorMsg)
             raise CdbHttpError(cdbHttpStatus.CDB_HTTP_UNAUTHORIZED, 'User Not Authorized', AuthorizationError(errorMsg))
@@ -109,8 +109,8 @@ def checkAuth(*args, **kwargs):
             for condition in conditions:
                 # A condition is just a callable that returns true or false
                 if not condition():
-                    logger.debug('Authorization check %s failed for username %s' % (condition.func_name, username))
-                    errorMsg = 'Authorization check %s failed for user %s.' % (condition.func_name, username)
+                    logger.debug('Authorization check %s failed for username %s' % (condition.__name__, username))
+                    errorMsg = 'Authorization check %s failed for user %s.' % (condition.__name__, username)
                     raise CdbHttpError(cdbHttpStatus.CDB_HTTP_UNAUTHORIZED, 'User Not Authorized', AuthorizationError(errorMsg))
         else:
             logger.debug('Username is not supplied')
@@ -199,9 +199,9 @@ class AuthController(CdbController):
             if username is None or password is None:
                 (username, password) = parseBasicAuthorizationHeaders()
             principal = checkCredentials(username, password)
-        except CdbHttpError, ex:
+        except CdbHttpError as ex:
             raise
-        except CdbException, ex:
+        except CdbException as ex:
             logger.debug('Authorization failed (username %s): %s' % (username, ex))
             self.addCdbExceptionHeaders(ex)
             raise CdbHttpError(cdbHttpStatus.CDB_HTTP_UNAUTHORIZED, 'User Not Authorized', ex)

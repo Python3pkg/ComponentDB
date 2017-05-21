@@ -13,7 +13,7 @@ See LICENSE file.
 #######################################################################
 
 import UserDict
-import UserList
+import collections
 import types
 import json
 import datetime
@@ -33,7 +33,7 @@ class CdbObject(UserDict.UserDict):
     DEFAULT_KEY_LIST = [ 'id', 'name' ]
 
     def __init__(self, dict={}):
-        if isinstance(dict, types.DictType): 
+        if isinstance(dict, dict): 
             UserDict.UserDict.__init__(self, dict)
         elif isinstance(dict, UserDict.UserDict):
             UserDict.UserDict.__init__(self, dict.data)
@@ -49,21 +49,21 @@ class CdbObject(UserDict.UserDict):
     @classmethod
     def getFromDict(cls, dict):
         inst = cls()
-        for key in dict.keys():
+        for key in list(dict.keys()):
             inst[key] = dict[key]
         return inst
 
     def getRepKeyList(self, keyList):
         if keyList is None:
             return self.DEFAULT_KEY_LIST
-        elif type(keyList) == types.ListType:
+        elif type(keyList) == list:
             if not len(keyList):
                 return self.DEFAULT_KEY_LIST
             else:
                 return keyList
-        elif type(keyList) == types.StringType:
+        elif type(keyList) == bytes:
             if keyList == CdbObject.ALL_KEYS:
-                return self.data.keys()
+                return list(self.data.keys())
             elif keyList == CdbObject.DEFAULT_KEYS:
                 return self.DEFAULT_KEY_LIST
             else:
@@ -82,7 +82,7 @@ class CdbObject(UserDict.UserDict):
             value = self.get(key)
             if isinstance(value, CdbObject):
                 dictRep[key] = value.getDictRep('__all__')
-            elif type(value) == types.ListType:
+            elif type(value) == list:
                 itemList = []
                 for item in value:
                     if isinstance(item, CdbObject):
@@ -105,7 +105,7 @@ class CdbObject(UserDict.UserDict):
             value = self.get(key)
             if isinstance(value, CdbObject):
                 display = display + '%s={ %s} ' % (key, value.getTextRep())
-            elif isinstance(value, types.ListType):
+            elif isinstance(value, list):
                 display = display + '%s=[ ' % key
                 for item in value:
                     if isinstance(item, CdbObject):
@@ -147,15 +147,15 @@ class CdbObject(UserDict.UserDict):
 if __name__ == '__main__':
     x = {'name' : 'XYZ', 'one':1, 'two':2 }
     o = CdbObject(x)
-    print 'CDB Object: ', o
-    print 'Type of CDB object: ', type(o)
-    print 'JSON Rep:  ', o.getJsonRep()
-    print 'Type of JSON rep: ', type(o.getJsonRep())
+    print('CDB Object: ', o)
+    print('Type of CDB object: ', type(o))
+    print('JSON Rep:  ', o.getJsonRep())
+    print('Type of JSON rep: ', type(o.getJsonRep()))
     j = '{"name" : "XYZ", "one":1, "two":2 }'
-    print 'String: ', j
+    print('String: ', j)
     x2 = CdbObject.fromJsonString(j)
-    print 'CDB Object 2: ', x2
-    print 'Type of CDB object 2: ', type(x2)
-    print x2.getDisplayString(displayKeyList='__all__')
+    print('CDB Object 2: ', x2)
+    print('Type of CDB object 2: ', type(x2))
+    print(x2.getDisplayString(displayKeyList='__all__'))
 
 
